@@ -4,7 +4,7 @@ const request = require('request');
 request.defaults({ jar: true }); // 保持cookie
 let i = 0; // 起始页
 const num = 9999; // 结束页
-module.exports = (url, cb) => {
+const start = (url, cb) => {
   i++;
   console.log(`当前进度：${i}/${num}`);
   request.get(url, function(error, response, body) {
@@ -13,11 +13,12 @@ module.exports = (url, cb) => {
       const leng = $('a.movie-box').length;
       const arr = [];
       const j = 0;
-      const obj = getObj(leng, arguments.callee);
+      console.log(leng);
+      // const obj = getObj(leng, start, $);
     }
   });
 };
-const getObj = (leng, cb) => {
+const getObj = (leng, cb, $) => {
   const detailUrl = $('a.movie-box')
     .eq(j)
     .prop('href');
@@ -43,7 +44,7 @@ const getObj = (leng, cb) => {
   };
   j++;
   if (j < leng) {
-    arguments.callee(j, leng);
+    getObj(j, leng);
   } else {
     cb('https://javmoo.net/cn/page/2');
   }
@@ -54,8 +55,4 @@ const insertData = obj => {
     cb('movies', obj);
   });
 };
-start('https://javmoo.net/cn');
-
-function add(i) {
-  console.log(arguments);
-}
+module.exports = start;

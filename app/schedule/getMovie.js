@@ -6,6 +6,6 @@ module.exports = {
     type: 'all', // 指定所有的 worker 都需要执行
   },
   async task(ctx) {
-    start;
+    start('https://javmoo.net/cn', ctx.service.user.insert);
   },
 };
