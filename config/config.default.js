@@ -33,7 +33,7 @@ module.exports = appInfo => {
   config.security = {
     domainWhiteList: [ 'http://localhost:3000', undefined ],
     csrf: {
-      ignore: *,
+      enable: false,
     },
   };
 
