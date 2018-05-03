@@ -1,23 +1,9 @@
 'use strict';
 const cheerio = require('cheerio');
 const request = require('request');
+const moment = require('moment');
 request.defaults({ jar: true }); // 保持cookie
-let i = 0; // 起始页
-const num = 9999; // 结束页
-module.exports = (url, cb) => {
-  i++;
-  console.log(`当前进度：${i}/${num}`);
-  request.get(url, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const $ = cheerio.load(body); // 采用cheerio模块解析html
-      const leng = $('a.movie-box').length;
-      const arr = [];
-      const j = 0;
-      const obj = getObj(leng, arguments.callee);
-    }
-  });
-};
-const getObj = (leng, cb) => {
+const getObj = (j, leng, $) => {
   const detailUrl = $('a.movie-box')
     .eq(j)
     .prop('href');
@@ -41,21 +27,40 @@ const getObj = (leng, cb) => {
     fanhao,
     date,
   };
-  j++;
-  if (j < leng) {
-    arguments.callee(j, leng);
-  } else {
-    cb('https://javmoo.net/cn/page/2');
-  }
   return obj;
 };
-const insertData = obj => {
-  return new Promise((resolve, reject) => {
-    cb('movies', obj);
+
+// cb('https://javmoo.net/cn/page/2');
+
+const insertData = async function(obj, ctx, j) {
+  console.log(obj);
+  // obj = {
+  //   ...obj,
+  //   createAt: moment(),
+  // };
+  const result = await ctx.app.mysql.insert('movies', obj);
+  console.log('result', result);
+  return j++;
+};
+const start = (url, ctx, i, num) => {
+  /** 开始爬 url：目标网站url,cb：插入数据库的方法，i:起始页，num：最大页数 */
+  request.get(url, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      const $ = cheerio.load(body); // 采用cheerio模块解析html
+      const leng = $('a.movie-box').length;
+      let j = 0;
+      console.log(leng);
+      const obj = getObj(j, leng, start, $);
+      insertData(obj, ctx, j).then(e => {
+        j = e;
+        console.log('j', j);
+      });
+      // if (j === leng) {
+      //   cb(`https://javmoo.net/cn/page/${i++}`);
+      // } else {
+
+      // }
+    }
   });
 };
-start('https://javmoo.net/cn');
-
-function add(i) {
-  console.log(arguments);
-}
+module.exports = start;
