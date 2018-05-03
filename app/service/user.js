@@ -11,22 +11,7 @@ class UserService extends Service {
     // 假如 我们拿到用户 id 从数据库获取用户详细信息
     console.log(id);
     const user = await this.app.mysql.get('user', { uid: id });
-
-    // 假定这里还有一些复杂的计算，然后返回需要的信息。
-    const picture = await this.getPicture(id);
-    return {
-      name: user.user_name,
-      age: user.age,
-      picture,
-    };
-  }
-
-  async getPicture(uid) {
-    const result = await this.ctx.curl(`http://photoserver/uid=${uid}`, {
-      dataType: 'json',
-    });
-    console.log('result', result);
-    return result.data;
+    return user;
   }
 }
 module.exports = UserService;
