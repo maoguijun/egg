@@ -36,6 +36,9 @@ module.exports = appInfo => {
       enable: false,
     },
   };
+  config.cors = {
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  };
 
   return config;
 };

@@ -2,7 +2,7 @@
 const Service = require('egg').Service;
 const uuidv4 = require('uuid/v4');
 const moment = require('moment');
-const { formatData } = require('../../utils/format');
+const { formatData, formatRequestObj } = require('../../utils/format');
 class RegisterService extends Service {
   // 默认不需要提供构造函数。
   // constructor(ctx) {
@@ -13,8 +13,17 @@ class RegisterService extends Service {
   async insert(obj) {
     // 假如 我们拿到用户 id 从数据库获取用户详细信息
     const uuid = uuidv4();
+    /** 数据库有的key */
+    const keys = [
+      { key: 'mail', required: true },
+      { key: 'mobile', required: false },
+      { key: 'password', required: true },
+      { key: 'name', required: false },
+      { key: 'age', required: false },
+      { key: 'photo', required: false },
+    ];
     await this.app.mysql.insert('user', {
-      ...obj,
+      ...formatRequestObj(obj, keys),
       uid: uuid,
       createAt: moment().format('YYYY-MM-DD HH:mm:ss'),
     });
