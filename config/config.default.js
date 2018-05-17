@@ -31,13 +31,17 @@ module.exports = appInfo => {
   };
 
   config.security = {
-    domainWhiteList: [ 'http://localhost:3000', 'http://localhost:8000' ],
+    domainWhiteList: ['http://localhost:3000', 'http://localhost:8000'],
     csrf: {
       enable: false,
     },
   };
   config.cors = {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  };
+  config.validate = {
+    enable: true,
+    package: 'egg-validate',
   };
 
   return config;

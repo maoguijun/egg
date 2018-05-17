@@ -1,6 +1,6 @@
 'use strict';
 const Service = require('egg').Service;
-class UserService extends Service {
+class MovieService extends Service {
   // 默认不需要提供构造函数。
   // constructor(ctx) {
   //   super(ctx); 如果需要在构造函数做一些处理，一定要有这句话，才能保证后面 `this.ctx`的使用。
@@ -17,13 +17,13 @@ class UserService extends Service {
   }
   async getList(search) {
     console.log(search)
-    const all = await this.app.mysql.select('user');
+    const all = await this.app.mysql.select('movies');
     const count = all.length;
-    const list = await this.app.mysql.select('user', search);
+    const list = await this.app.mysql.select('movies', search);
     return {
       rows: list,
       count,
     };
   }
 }
-module.exports = UserService;
+module.exports = MovieService;
