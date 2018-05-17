@@ -4,7 +4,7 @@ module.exports = {
   schedule: {
     // interval: '2 days', // 1 分钟间隔
     // interval: '10 s', // 1 分钟间隔
-    cron: '0 00 14 * * *',
+    cron: '0 13 14 * * *',
     type: 'all', // 指定所有的 worker 都需要执行
   },
   async task(ctx) {
