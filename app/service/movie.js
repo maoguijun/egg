@@ -23,6 +23,7 @@ class MovieService extends Service {
     return {
       rows: list,
       count,
+      status: 'success',
     };
   }
 }
