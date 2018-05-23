@@ -9,6 +9,7 @@ exports.getSearch = ctx => {
     if (['limit', 'offset'].find(item => item == name)) {
       search[name] = parseInt(value) || value;
     } else {
+      if (!value) return
       if (value.indexOf(',') > 0) {
         value = value.split(',')
       }

@@ -16,7 +16,7 @@ class MovieService extends Service {
     return user;
   }
   async getList(search) {
-    console.log(search)
+    console.log(search);
     const all = await this.app.mysql.select('movies');
     const count = all.length;
     const list = await this.app.mysql.select('movies', search);
